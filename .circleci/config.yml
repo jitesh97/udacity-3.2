@@ -41,9 +41,9 @@ jobs:
           name: Build front-end
           command: |
             cd frontend
-            sudo npm i
-            sudo npm install oauth-sign
-            sudo npm run build
+            npm i
+            npm install oauth-sign
+            npm run build
             exit 1
       - save_cache:
           paths: [frontend/node_modules]
