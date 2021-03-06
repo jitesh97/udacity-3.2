@@ -26,8 +26,10 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.EnvironmentPlugin(['NODE_ENV', 'DEBUG']);
   ],
+  new webpack.DefinePlugin({
+    "env_property": .env_property
+  }),
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'server.js',
