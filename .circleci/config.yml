@@ -42,7 +42,7 @@ jobs:
           command: |
             cd frontend
             npm i
-            npm i ajv
+            npm install oauth-sign
             npm install webpack-dev-server -g
             npm run build
             exit 1
