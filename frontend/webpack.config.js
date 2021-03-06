@@ -153,7 +153,7 @@ module.exports = {
     new Dotenv(),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
-      DEBUG: true,
+      DEBUG: false,
       API_URL: process.env.API_URL,
       WP_HELP_EMAIL: 'info@acklenavenue.com',
     }),
