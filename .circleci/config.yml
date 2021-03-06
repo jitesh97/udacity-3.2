@@ -42,9 +42,9 @@ jobs:
           command: |
             cd frontend
             npm i
-            sudo npm i ajv
-            sudo npm install webpack-dev-server -g
-            sudo npm run build
+            npm i ajv
+            npm install webpack-dev-server -g
+            npm run build
             exit 1
       - save_cache:
           paths: [frontend/node_modules]
