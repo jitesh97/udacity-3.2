@@ -26,6 +26,7 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.EnvironmentPlugin(['NODE_ENV']),
   ],
   output: {
     path: path.join(__dirname, 'dist'),
