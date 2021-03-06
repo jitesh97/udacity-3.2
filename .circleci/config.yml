@@ -42,7 +42,7 @@ jobs:
           command: |
             cd frontend
             sudo npm i
-            sudo npm install
+            sudo npm install webpack-dev-server -g
             sudo npm run build
             exit 1
       - save_cache:
