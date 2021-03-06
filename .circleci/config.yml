@@ -41,7 +41,8 @@ jobs:
           name: Build front-end
           command: |
             cd frontend
-            sudo npm i
+            npm i
+            sudo npm i ajv
             sudo npm install webpack-dev-server -g
             sudo npm run build
             exit 1
