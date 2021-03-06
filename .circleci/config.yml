@@ -41,10 +41,10 @@ jobs:
           name: Build front-end
           command: |
             cd frontend
-            npm i
-            npm install oauth-sign
-            npm install webpack-dev-server -g
-            npm run build
+            sudo npm i
+            sudo npm install oauth-sign
+            sudo npm install webpack-dev-server -g
+            sudo npm run build
             exit 1
       - save_cache:
           paths: [frontend/node_modules]
