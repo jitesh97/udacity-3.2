@@ -1,34 +1,31 @@
 version: 2.1
 
 commands:
-#  destroy-environment:
+  destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    parameters:
-      # Add parameter here   
     steps:
       - run:
           name: Destroy environments
           when: on_fail
           command: |
-            # Your code here
+            aws s3 rm "s3://udapeople-${OLD_WORKFLOW:0:7}" --recursive
+            aws cloudformation delete-stack --stack-name udapeople-${OLD_WORKFLOW:0:7}
             exit 1
 
-#  revert-migrations:
-    description: Revert the last migration if successfully run in the current workflow.
-    parameters:
-      # Add parameter here     
+  revert-migrations:
+    description: Revert the last migration if successfully run in the current workflow.  
     steps:
       - run:
           name: Revert migrations
           # Add when this will run
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
+            export SUCESS=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/SUCCESS)
             SUCCESS = 1
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
+              cd ~/project/backend
+              npm install
+              npm migrations:revert
               exit 1
             fi
             
@@ -43,7 +40,10 @@ jobs:
       - run:
           name: Build front-end
           command: |
-            # Your code here
+            cd frontend
+            sudo npm i
+            sudo npm install
+            sudo npm run build
             exit 1
       - save_cache:
           paths: [frontend/node_modules]
@@ -59,7 +59,10 @@ jobs:
       - run:
           name: Back-end build
           command: |
-             # Your code here
+             cd backend
+             sudo npm i
+             sudo npm install
+             sudo npm run build
              exit 1
       - save_cache:
           paths: [backend/node_modules]
@@ -99,9 +102,9 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
     steps:
-      # Checkout code from git
+      - checkout
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -116,14 +119,16 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              #--tags project=udapeople-frontend \
-              # --stack-name "your front-end stack name with workflow id" \
-              # --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"  
+              --tags project=udapeople-frontend \
+              --stack-name "udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
               exit 1
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            # Your code here
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:project, Values=udapeople" \
+            --output text > .circleci/ansible/inventory.txt
             exit 1
       - persist_to_workspace:
           root: ~/
@@ -243,7 +248,7 @@ jobs:
           command: |
             # your code here
       - run:
-          name: Update cloudfront distribution
+          name: Saving workflow ID
           command: |
             OLD_WORKFLOW=$(aws cloudformation \
             list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
@@ -251,6 +256,13 @@ jobs:
             echo $OLD_WORKFLOW
             curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT \
               --data "$OLD_WORKFLOW" https://api.memstash.io/values/OLD_WORKFLOW
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            aws cloudformation deploy \
+            --template-file cloudfront.yml \
+            --stack-name cloudfront \
+            --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID}"            
       # Here's where you will add some code to rollback on failure  
 
 cleanup:
@@ -293,15 +305,15 @@ workflows:
 #              only: [test-feature-branch]
       - configure-infrastructure
 #          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
-          requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
+#      - run-migrations:
+#          requires: [configure-infrastructure]
+#      - deploy-frontend:
+#          requires: [run-migrations]
+#      - deploy-backend:
+#          requires: [run-migrations]
+#      - smoke-test:
+#          requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update
+#          requires: [smoke-test]
+      - cleanup
+#          requires: [cloudfront-update]
