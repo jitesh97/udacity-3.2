@@ -44,7 +44,6 @@ jobs:
             npm i
             npm install oauth-sign
             npm run build
-            exit 1
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
