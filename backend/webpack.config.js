@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-var env = require('.env');
 
 module.exports = {
   entry: ['webpack/hot/poll?1000', './src/main.hmr.ts'],
@@ -28,9 +27,6 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
   ],
-  new webpack.DefinePlugin({
-    "env_property": .env_property
-  }),
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'server.js',
