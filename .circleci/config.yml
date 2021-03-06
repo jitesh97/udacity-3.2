@@ -42,7 +42,7 @@ jobs:
           command: |
             cd frontend
             npm i
-            npm install oauth-sign
+            npm install
             npm run build
       - save_cache:
           paths: [frontend/node_modules]
@@ -110,7 +110,6 @@ jobs:
               #--tags project=udapeople-backend \
               # --stack-name "udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
               # --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-              exit 1
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -119,14 +118,12 @@ jobs:
               --tags project=udapeople-frontend \
               --stack-name "udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-              exit 1
       - run:
           name: Add back-end ip to ansible inventory
           command: |
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name=tag:project, Values=udapeople" \
             --output text > .circleci/ansible/inventory.txt
-            exit 1
       - persist_to_workspace:
           root: ~/
           paths:
@@ -147,13 +144,11 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible # install the dependencies needed for your playbook
-            exit 1
       - run:
           name: Configure server
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt playbook.yml
-            exit 1
       # Here's where you will add some code to rollback on failure      
 
 #  run-migrations:
