@@ -61,10 +61,8 @@ jobs:
           name: Back-end build
           command: |
              cd backend
-             sudo npm i
-             sudo npm install
-             sudo npm run build
-             exit 1
+             npm i
+             npm run build
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
