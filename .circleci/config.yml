@@ -231,7 +231,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export API_URL=${curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "success" https://api.memstash.io/values/BACKENDURL}
+            export API_URL=$(curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "success" https://api.memstash.io/values/BACKENDURL)
             echo "${API_URL}"
             npm run build
       - run:
