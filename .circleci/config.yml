@@ -270,9 +270,6 @@ jobs:
           export ANSIBLE_HOST_KEY_CHECKING = false
             cd /.circleci/ansible
             ansible-playbook -i inventory.txt playbook.yml
-      - persist_to_workspace:
-          root: .
-          paths:
       - destroy-environment
       - revert-migrations
 
