@@ -115,7 +115,6 @@ jobs:
           command: |
             cd backend
             npm audit --audit-level=critical
-          fi
 
   deploy-infrastructure:
     docker:
