@@ -268,8 +268,8 @@ jobs:
           name: Deploy backend
           command: |
           export ANSIBLE_HOST_KEY_CHECKING = false
-          cd /.circleci/ansible
-          ansible-playbook -i inventory.txt playbook.yml
+            cd /.circleci/ansible
+            ansible-playbook -i inventory.txt playbook.yml
       - persist_to_workspace:
           root: .
           paths:
