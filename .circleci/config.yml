@@ -180,6 +180,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - restore_cache:
+        keys: ['frontend-build']
       - run:
           name: Re-install AWS Dependencies for the Rollback
           command: |
@@ -214,17 +216,23 @@ jobs:
 
 #  deploy-frontend:
 #    docker:
-#      # Docker image here that supports AWS CLI
+#      - image: circleci/node:13.8.0
 #    steps:
-      # Checkout code from git
+#      - checkout
 #      - run:
 #          name: Install dependencies
 #          command: |
-            # your code here
+#            cd frontend
+#            sudo apt-get update 
+#            sudo apt-get install python3
+#            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+#            unzip awscliv2.zip
+#            sudo ./aws/install
 #      - run:
 #          name: Get backend url
 #          command: |
-            # your code here
+#            
+#            # your code here
 #            export API_URL="http://${BACKEND_IP}:3030"
 #            echo "${API_URL}"
 #      - run:
@@ -324,8 +332,8 @@ jobs:
 workflows:
   default:
     jobs:
-#      - build-frontend
-#      - build-backend
+      - build-frontend
+      - build-backend
 #      - test-frontend:
 #          requires: [build-frontend]
 #      - test-backend:
