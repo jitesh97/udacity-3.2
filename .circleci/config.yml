@@ -59,8 +59,8 @@ jobs:
           name: Back-end build
           command: |
              cd backend
-             npm install -g typescript
              npm i
+             npm install -g typescript
              npm run build
       - save_cache:
           paths: [backend/node_modules]
