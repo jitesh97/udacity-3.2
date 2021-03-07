@@ -146,10 +146,10 @@ jobs:
           command: |
             aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:project, Values=udapeople" \
+            --filters "Name=tag:project, Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --output text > .circleci/ansible/inventory.txt
 
-            curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID} --request PUT --data "http://$BACKEND_IP:3030" https://api.memstash.io/values/BACKEND_URL
+            curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID} --request PUT --data "http://$BACKEND_IP:3030" https://api.memstash.io/values/BACKEND_URL"
       - persist_to_workspace:
           root: ~/
           paths:
