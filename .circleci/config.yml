@@ -192,8 +192,6 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm update       
-            npm audit fix --force
             npm run migrations > migration_storage.txt
       - run:
           name: Send migration results to memstash
