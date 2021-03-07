@@ -193,6 +193,7 @@ jobs:
           command: |
             cd backend
             npm install
+            npm update
             npm audit fix
             npm run migrations > migration_storage.txt
       - run:
