@@ -192,9 +192,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm install
-            npm update
-            npm install -g typescript          
+            npm update       
             npm audit fix --force
             npm run migrations > migration_storage.txt
       - run:
