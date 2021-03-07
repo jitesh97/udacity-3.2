@@ -192,6 +192,9 @@ jobs:
           name: Run migrations
           command: |
             cd backend
+            npm install
+            npm update
+            npm install -g typescript
             npm run migrations > migration_storage.txt
       - run:
           name: Send migration results to memstash
