@@ -71,10 +71,10 @@ jobs:
       - restore_cache:
           keys: ["frontend-build"]
       - run:
-        name: Testing Front-End
-        command: |
-          cd frontend
-          npm run test
+          name: Testing Front-End
+          command: |
+            cd frontend
+            npm run test
 
                 
   test-backend:
@@ -85,10 +85,10 @@ jobs:
       - restore_cache:
         keys: ["backend-build"]
       - run:
-        name: Testing Back-End
-        command: |
-          cd backend
-          npm run test
+          name: Testing Back-End
+          command: |
+            cd backend
+            npm run test
             
   scan-frontend:
     docker:
@@ -98,10 +98,10 @@ jobs:
       - restore_cache:
         keys: ['frontend-build']
       - run:
-        name: Scanning Front-End
-        command: |
-          cd frontend
-          npm audit --audit-level=critical
+          name: Scanning Front-End
+          command: |
+            cd frontend
+            npm audit --audit-level=critical
 
   scan-backend:
     docker:
@@ -111,10 +111,10 @@ jobs:
       - restore_cache:
         keys: ['backend-build']
       - run:
-        name: Scanning Back-End
-        command: |
-          cd backend
-          npm audit --audit-level=critical
+          name: Scanning Back-End
+          command: |
+            cd backend
+            npm audit --audit-level=critical
 
   deploy-infrastructure:
     docker:
