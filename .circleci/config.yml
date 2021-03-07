@@ -10,7 +10,6 @@ commands:
           command: |
             aws s3 rm "s3://udapeople-${OLD_WORKFLOW:0:7}" --recursive
             aws cloudformation delete-stack --stack-name udapeople-${OLD_WORKFLOW:0:7}
-            exit 1
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.  
@@ -26,7 +25,6 @@ commands:
               cd ~/project/backend
               npm install
               npm migrations:revert
-              exit 1
             fi
             
 jobs:
