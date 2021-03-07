@@ -202,8 +202,8 @@ jobs:
             else
               curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "failed" https://api.memstash.io/values/FAILEDMIGRATION
             fi
-      - destroy-environment
-      - revert-migrations
+    - destroy-environment
+    - revert-migrations
      # Here's where you will add some code to rollback on failure      
 
 #  deploy-frontend:
