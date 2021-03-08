@@ -202,6 +202,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
+            npm i
             npm run migrations >> migration_storage.txt
             cat migration_storage.txt
       - run:
