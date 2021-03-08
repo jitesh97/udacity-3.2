@@ -200,7 +200,6 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            sudo npm install
             npm run build
             npm run migrations > migration_storage.txt
             cat migration_storage.txt
