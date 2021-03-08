@@ -184,7 +184,6 @@ jobs:
             BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_IP)
             echo $BACKEND_IP >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
-#            cd .circleci/ansible
             ansible-playbook configure-server.yml -i inventory.txt
 #      - destroy-environment   
 
