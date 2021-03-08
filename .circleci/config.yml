@@ -177,7 +177,6 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible # install the dependencies needed for your playbook
-            pip install awscli
             cat .circleci/ansible/inventory.txt
       - run:
           name: Configure server
