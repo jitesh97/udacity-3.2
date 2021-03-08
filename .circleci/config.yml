@@ -202,7 +202,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm run migrations > migration_storage.txt
+            npm run migrations >> migration_storage.txt
             cat migration_storage.txt
       - run:
           name: Send migration results to memstash
