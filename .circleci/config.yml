@@ -204,8 +204,6 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            sudo npm install
-            npm audit fix --audit-level=critical --force
             sudo npm run build
             sudo npm run migrations > migration_status
       - run:
