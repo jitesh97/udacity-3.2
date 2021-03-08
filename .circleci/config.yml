@@ -53,8 +53,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - restore_cache:
-          keys: [backend-build]
       - run:
           name: Back-end build
           command: |
