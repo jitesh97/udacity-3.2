@@ -166,7 +166,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: circleci/python:3.9.1-buster
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
@@ -178,6 +178,7 @@ jobs:
           command: |
             apk add --update ansible # install the dependencies needed for your playbook
             pip install awscli
+            cat .circleci/ansible/inventory.txt
       - run:
           name: Configure server
           command: |
