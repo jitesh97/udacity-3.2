@@ -200,6 +200,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
+            npm remove -g typeorm
             npm run migrations > migration_storage.txt
             cat migration_storage.txt
       - run:
