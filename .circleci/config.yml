@@ -157,7 +157,7 @@ jobs:
           command: |
             BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_IP)
             echo $BACKEND_IP >> .circleci/ansible/inventory.txt
-            cd ./.circleci/ansible/inventory.txt
+            cd ./.circleci/ansible/
             cat inventory.txt
       - persist_to_workspace:
           root: ~/
