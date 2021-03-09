@@ -252,9 +252,9 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            cd frontend
-            BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_IP)
+            export BACKEND_IP=$(sed -n 2p .circleci/ansible/inventory.txt)
             export API_URL="http://${BACKEND_IP}:3030"
+            echo $API_URL
             npm run build
       - run:
           name: Deploy frontend objects
