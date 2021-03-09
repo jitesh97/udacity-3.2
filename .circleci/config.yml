@@ -9,7 +9,7 @@ commands:
           when: on_fail
           command: |
             aws s3 rm "s3://udapeople-${OLD_WORKFLOW}" --recursive
-            aws cloudformation delete-stack --stack-name udapeople-${OLD_WORKFLOW:0:7}
+            aws cloudformation delete-stack --stack-name udapeople-${OLD_WORKFLOW}
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.  
@@ -313,6 +313,14 @@ jobs:
           command: |
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-us-west-2.amazonaws.com"
             curl -s ${URL} | grep "Welcome"
+
+            if curl -s ${URL} | grep "Welcome"
+            then
+            return 1
+            else
+            return 0
+            fi
+
       - destroy-environment  
       - revert-migrations  
 
@@ -377,7 +385,7 @@ workflows:
 #          requires: [build-backend]
 #      - scan-frontend:
 #          requires: [build-frontend]
-      - deploy-infrastructure
+#      - deploy-infrastructure
 #          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
 #          filters:
 #            branches:
@@ -390,8 +398,8 @@ workflows:
 #          requires: [deploy-infrastructure]
 #      - deploy-backend:
 #          requires: [configure-infrastructure]
-      - smoke-test:
-          requires: [deploy-infrastructure]
+      - smoke-test
+#          requires: [deploy-infrastructure]
 #      - cloudfront-update:
 #          requires: [smoke-test]
 #      - cleanup:
