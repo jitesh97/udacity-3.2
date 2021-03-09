@@ -362,7 +362,7 @@ jobs:
               echo $OLD_WORKFLOW
               aws s3 rm "s3://udapeople-frontend-${OLD_WORKFLOW}" --recursive
               aws cloudformation delete-stack --stack-name udapeople-frontend-${OLD_WORKFLOW}
-#              aws cloudformation delete-stack --stack-name udapeople-backend-${OLD_WORKFLOW}
+              aws cloudformation delete-stack --stack-name udapeople-backend-${OLD_WORKFLOW}
 #      - run:
 #          name: Remove old stacks and files
 #          command: |
