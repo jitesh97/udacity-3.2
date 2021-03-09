@@ -252,9 +252,8 @@ jobs:
           name: Get backend url
           command: |
             cd frontend
-            export API_URL=$(curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "success" https://api.memstash.io/values/BACKENDURL)
+            export API_URL=$(curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_URL)
             echo "${API_URL}"
-            npm install
             npm run build
       - run:
           name: Deploy frontend objects
