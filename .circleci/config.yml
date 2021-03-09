@@ -260,7 +260,7 @@ jobs:
           name: Deploy frontend objects
           command: |
             cd frontend
-            aws s3 cp ./dist "s3://udapeople-${CIRCLE_WORKFLOW_ID}" --recursive
+            aws s3 cp ./dist "s3://udapeople-frontend-${CIRCLE_WORKFLOW_ID}" --recursive
       - persist_to_workspace:
           root: .
           paths:
@@ -361,7 +361,8 @@ jobs:
               OLD_WORKFLOW=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/OLD_WORKFLOW)
               echo $OLD_WORKFLOW
               aws s3 rm "s3://udapeople-${OLD_WORKFLOW}" --recursive
-              aws cloudformation delete-stack --stack-name udapeople-${OLD_WORKFLOW}
+              aws cloudformation delete-stack --stack-name udapeople-frontend-${OLD_WORKFLOW}
+              aws cloudformation delete-stack --stack-name udapeople-backend-${OLD_WORKFLOW}
 #      - run:
 #          name: Remove old stacks and files
 #          command: |
@@ -384,7 +385,7 @@ workflows:
 #          requires: [build-backend]
 #      - scan-frontend:
 #          requires: [build-frontend]
-      - deploy-infrastructure
+#      - deploy-infrastructure
 #          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
 #          filters:
 #            branches:
@@ -397,9 +398,9 @@ workflows:
 #          requires: [deploy-infrastructure]
 #      - deploy-backend:
 #          requires: [configure-infrastructure]
-      - smoke-test:
-          requires: [deploy-infrastructure]
-      - cloudfront-update:
-          requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
+#      - smoke-test:
+#          requires: [deploy-infrastructure]
+#      - cloudfront-update:
+#          requires: [smoke-test]
+      - cleanup
+#          requires: [cloudfront-update]
