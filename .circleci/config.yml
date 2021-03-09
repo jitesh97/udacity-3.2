@@ -253,7 +253,13 @@ jobs:
           command: |
             cd frontend
             export API_URL=$(curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_URL)
+
+            echo ENVIRONMENT=production > "frontend/.env"
+            echo NODE_ENV=production >> "frontend/.env"
+            echo API_URL=$API_URL >> "frontend/.env"
+            
             echo "${API_URL}"
+            npm install webpack-dev-server -g
             npm run build
       - run:
           name: Deploy frontend objects
