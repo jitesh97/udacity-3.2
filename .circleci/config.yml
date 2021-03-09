@@ -242,20 +242,17 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            cd frontend
-            sudo apt-get update 
-            sudo apt-get install python3
+            sudo apt-get update && sudo apt-get install -yy less
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
+            npm install webpack-dev-server -g
       - run:
           name: Get backend url
           command: |
             cd frontend
             export API_URL=$(curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_URL)           
             echo "${API_URL}"
-            npm i -g nativescript
-            npm install webpack-dev-server -g
             npm run build
       - run:
           name: Deploy frontend objects
