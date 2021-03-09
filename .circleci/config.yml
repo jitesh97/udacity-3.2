@@ -8,8 +8,8 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws s3 rm "s3://udapeople-${OLD_WORKFLOW}" --recursive
-            aws cloudformation delete-stack --stack-name udapeople-${OLD_WORKFLOW}
+            aws s3 rm "s3://udapeople-${OLDWORKFLOW}" --recursive
+            aws cloudformation delete-stack --stack-name udapeople-${OLDWORKFLOW}
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.  
@@ -137,12 +137,13 @@ jobs:
               --tags project=udapeople-backend \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"
-
+      - run:
+          name: Save to memstash
+          command: |
             BACKEND_IP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
               --output text)
-            echo $BACKEND_IP
             curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "$BACKEND_IP" https://api.memstash.io/values/BACKEND_IP
       - run:
           name: Ensure front-end infrastructure exist
@@ -155,15 +156,20 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_IP)
-            echo $BACKEND_IP >> .circleci/ansible/inventory.txt
-            cd ./.circleci/ansible/
-            cat inventory.txt
+            BACKEND_IP=$(aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
+              --output text)
+            cat .circleci/ansible/inventory.txt
+              
+#            curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "$BACKEND_IP" https://api.memstash.io/values/BACKEND_IP
+#            BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_IP)
+#            echo $BACKEND_IP >> .circleci/ansible/inventory.txt
+#            cd ./.circleci/ansible/
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt
-      # Here's where you will add some code to rollback on failure      
+            - .circleci/ansible/inventory.txt      
 
   configure-infrastructure:
     docker:
@@ -178,11 +184,12 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
+            ansible --version
             pip install awscli
       - run:
           name: Configure server
+          working_directory: ./.circleci/ansible
           command: |
-            cd .circleci/ansible
             ansible-playbook configure-server.yml -i inventory.txt  
 
   run-migrations:
@@ -251,8 +258,8 @@ jobs:
             sudo npm install
       - run:
           name: Get backend url
+          working_directory: ./frontend
           command: |
-            cd frontend
             export API_URL=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_URL)
             echo "${API_URL}"
             npm run build
@@ -284,8 +291,8 @@ jobs:
             pip install awscli        
       - run:
           name: Deploy backend
+          working_directory: ./.circleci/ansible
           command: |
-            cd .circleci/ansible
             ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environment
       - revert-migrations
@@ -316,7 +323,7 @@ jobs:
             then
               return 0
             else
-              return 0
+              return 1
             fi
       - destroy-environment  
       - revert-migrations  
@@ -335,12 +342,12 @@ jobs:
       - run:
           name: Saving workflow ID
           command: |
-            OLD_WORKFLOW=$(aws cloudformation \
+            OLDWORKFLOW=$(aws cloudformation \
             list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
             --no-paginate --output text)
-            echo $OLD_WORKFLOW
+            echo $OLDWORKFLOW
             curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT \
-              --data "$OLD_WORKFLOW" https://api.memstash.io/values/OLD_WORKFLOW
+              --data "$OLDWORKFLOW" https://api.memstash.io/values/OLDWORKFLOW
       - run:
           name: Update cloudfront distribution
           command: |
@@ -358,19 +365,12 @@ jobs:
         - run:
             name: Get old stack workflow id
             command: |
-              OLD_WORKFLOW=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/OLD_WORKFLOW)
-              echo $OLD_WORKFLOW
-              aws s3 rm "s3://udapeople-frontend-${OLD_WORKFLOW}" --recursive
-              aws cloudformation delete-stack --stack-name udapeople-frontend-${OLD_WORKFLOW}
-              aws cloudformation delete-stack --stack-name udapeople-backend-${OLD_WORKFLOW}
-#      - run:
-#          name: Remove old stacks and files
-#          command: |
-#            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-#            then
-#              # your code here
-#            fi
-            
+              OLDWORKFLOW=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/OLDWORKFLOW)
+              echo $OLDWORKFLOW
+              aws s3 rm "s3://udapeople-frontend-${OLDWORKFLOW}" --recursive
+              aws cloudformation delete-stack --stack-name udapeople-frontend-${OLDWORKFLOW}
+              aws cloudformation delete-stack --stack-name udapeople-backend-${OLDWORKFLOW}
+  
 
 workflows:
   default:
