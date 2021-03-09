@@ -252,14 +252,13 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP=$(sed -n 2p .circleci/ansible/inventory.txt)
-            export API_URL="http://${BACKEND_IP}"
-            echo $API_URL
+            cd frontend
+            export API_URL=$(curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_URL)           
+            echo "${API_URL}"
             npm run build
       - run:
           name: Deploy frontend objects
           command: |
-            cd frontend
             aws s3 cp ./dist "s3://udapeople-frontend-${CIRCLE_WORKFLOW_ID}" --recursive
       - persist_to_workspace:
           root: .
