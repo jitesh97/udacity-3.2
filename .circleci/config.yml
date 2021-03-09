@@ -306,9 +306,6 @@ jobs:
             BACKEND_URL=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_URL)
             BACKENDURL="http://${BACKEND_IP}:3030/api/status"
             echo $BACKENDURL
-#      - run:
-#          name: Backend smoke test.
-#          command: |
       - run:
           name: Frontend smoke test.
           command: |
