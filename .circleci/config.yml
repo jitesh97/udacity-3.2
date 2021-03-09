@@ -253,7 +253,7 @@ jobs:
           name: Get backend url
           command: |
             export BACKEND_IP=$(sed -n 2p .circleci/ansible/inventory.txt)
-            export API_URL="http://${BACKEND_IP}:3030"
+            export API_URL="http://${BACKEND_IP}"
             echo $API_URL
             npm run build
       - run:
@@ -377,7 +377,7 @@ workflows:
 #          requires: [build-backend]
 #      - scan-frontend:
 #          requires: [build-frontend]
-      - deploy-infrastructure
+#      - deploy-infrastructure
 #          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
 #          filters:
 #            branches:
@@ -386,8 +386,8 @@ workflows:
 #          requires: [deploy-infrastructure]
 #      - run-migrations:
 #         requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [deploy-infrastructure]
+      - deploy-frontend
+#          requires: [deploy-infrastructure]
 #      - deploy-backend:
 #          requires: [configure-infrastructure]
 #      - smoke-test:
