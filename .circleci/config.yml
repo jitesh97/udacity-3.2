@@ -234,7 +234,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
     steps:
       - checkout
       - attach_workspace:
@@ -242,11 +242,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo apt-get update && sudo apt-get install -yy less
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-            npm install webpack-dev-server -g
+            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+            yum -y install nodejs npm
+            yum -y install tar gzip
       - run:
           name: Get backend url
           command: |
