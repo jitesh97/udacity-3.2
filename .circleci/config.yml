@@ -398,9 +398,9 @@ workflows:
           requires: [deploy-infrastructure]
       - deploy-backend:
           requires: [configure-infrastructure]
-#      - smoke-test:
-#          requires: [deploy-infrastructure]
+      - smoke-test:
+          requires: [deploy-infrastructure]
       - cloudfront-update:
-#          requires: [smoke-test]
+          requires: [smoke-test]
       - cleanup:
           requires: [cloudfront-update]
