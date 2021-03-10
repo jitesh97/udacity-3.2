@@ -319,7 +319,7 @@ jobs:
               --output text >> inventory.txt
             cat inventory.txt
             ansible all --list-hosts
-            ansible-playbook deploy-backend.yml -i inventory.txt 
+            ansible-playbook deploy-backend.yml -i inventory.txt -vv
       - destroy-environment
       - revert-migrations
 
