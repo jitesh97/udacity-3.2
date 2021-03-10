@@ -7,15 +7,13 @@
   become: True
   copy:
     src: /root/project/backend.tar.gz
-    dest: /home/ubuntu/backend.tar.gz
+    dest: /home/ubuntu/backend
 
 - name: Copy node modules
   become: True
   shell: |
     cd /home/ubuntu/backend
     npm install
-    npm install -g webpack-dev-server
-    npm run build
 
 - name: Start PM2
   become: True
