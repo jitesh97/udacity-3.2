@@ -1,0 +1,17 @@
+Github Repository
+https://github.com/jitesh97/udacity-3.2/tree/testing
+
+S3 Bucket (Public URL - Green Candidate Front End)
+http://udapeople-frontend-699b7ff0-077a-4efb-aa6d-503a2e27a592.s3-website-us-west-2.amazonaws.com/
+
+Cloudfront Distribution (Blue production Front End)
+https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/stackinfo?stackId=arn%3Aaws%3Acloudformation%3Aus-west-2%3A059869449067%3Astack%2Fcloudfront%2F351065a0-7c5a-11eb-9d72-0add41d2dc9f
+
+EC2 (Backend Application)
+https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#InstanceDetails:instanceId=i-00889b67d585883a3
+https://ec2-34-218-41-128.us-west-2.compute.amazonaws.com:3030/
+
+Prometheus Server 
+http://ec2-54-191-49-217.us-west-2.compute.amazonaws.com:9090/alerts 
+Alert Manager
+http://ec2-54-191-49-217.us-west-2.compute.amazonaws.com:9093/#/alerts
