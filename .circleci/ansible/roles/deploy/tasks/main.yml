@@ -16,11 +16,9 @@
     npm install
     npm install -g webpack-dev-server
     npm run build
-  
-- name: Start the server
-  become: true
 
 - name: Start PM2
+  become: True
   shell: |
     cd /home/ubuntu/backend
     sudo pm2 start npm --name backend -- start
