@@ -186,7 +186,22 @@ jobs:
           name: Configure server
           working_directory: ./.circleci/ansible
           command: |
-            ansible-playbook configure-server.yml -i inventory.txt  
+
+            echo ENVIRONMENT=production > "backend/.env"
+            echo TYPEORM_CONNECTION=postgres >> "backend/.env"
+            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
+            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
+            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
+            echo NODE_ENV=production >> "backend/.env"
+            echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
+            echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
+
+            ansible-playbook\
+              -i .circleci/ansible/inventory.txt \
+              .circleci/ansible/configure-server.yml
 
   run-migrations:
     docker:
@@ -289,7 +304,9 @@ jobs:
           name: Deploy backend
           working_directory: ./.circleci/ansible
           command: |
-            ansible-playbook -i inventory.txt configure-server.yml
+            ansible-playbook \
+              -i .circleci/ansible/inventory.txt \
+              .circleci/ansible/deploy-backend.yml
       - destroy-environment
       - revert-migrations
 
