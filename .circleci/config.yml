@@ -186,9 +186,7 @@ jobs:
           name: Configure server
           working_directory: ./.circleci/ansible
           command: |
-            ansible-playbook\
-              -i .circleci/ansible/inventory.txt \
-              .circleci/ansible/configure-server.yml
+            ansible-playbook configure-server.yml -i inventory.txt 
 
   run-migrations:
     docker:
@@ -302,10 +300,8 @@ jobs:
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
 
-            cd ./.circleci/ansible
-            ansible-playbook \
-              -i .circleci/ansible/inventory.txt \
-              .circleci/ansible/deploy-backend.yml
+            cd .circleci/ansible
+            ansible-playbook deploy-backend.yml -i inventory.txt 
       - destroy-environment
       - revert-migrations
 
