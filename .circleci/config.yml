@@ -145,7 +145,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
               --output text)
-            curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "$BACKEND_IP" https://api.memstash.io/values/BACKEND_IP
+            curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data "http://$BACKEND_IP:3030" https://api.memstash.io/values/BACKEND_URL
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -256,8 +256,8 @@ jobs:
           name: Get backend url
           working_directory: ./frontend
           command: |
-            export BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_IP)
-            export "API_URL="http://${BACKEND_IP}:3030"
+            export API_URL=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BACKEND_URL)
+            echo "${API_URL}"
             npm run build
       - run:
           name: Deploy frontend objects
