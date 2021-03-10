@@ -6,7 +6,7 @@
 - name: Unarchive backend dist
   become: True
   copy:
-    src: /root/project/backend.tar.gz
+    src: /home/backend.tar.gz
     dest: /home/ubuntu/backend
 
 #- name: Copy node modules
