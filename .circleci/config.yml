@@ -161,7 +161,7 @@ jobs:
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
-              --output text) >> inventory.txt
+              --output text >> inventory.txt
             cat inventory.txt
 #            BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" \
 #            --request GET https://api.memstash.io/values/BACKEND_IP)
