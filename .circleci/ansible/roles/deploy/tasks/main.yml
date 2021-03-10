@@ -4,22 +4,26 @@
     state: directory
 
 - name: Unarchive backend dist
-  unarchive:
+  become: True
+  copy:
     src: /root/project/backend.tar.gz
     dest: /home/ubuntu/backend
 
-- name: Copy node modules
-  become: true
-  shell: |
-    cd /home/ubuntu/
-    sudo npm install
-    sudo npm install -g webpack-dev-server
-    sudo npm run build
+#- name: Copy node modules
+#  become: true
+#  shell: |
+#    cd /home/ubuntu/
+#    sudo npm install
+#    sudo npm install -g webpack-dev-server
+#    sudo npm run build
 
 - name: Start PM2
   become: true
   shell: |
     cd /home/ubuntu/
     tar xzvf backend.tar.gz
+    sudo npm install
+    sudo npm install -g webpack-dev-server
+    sudo npm run build
     sudo pm2 start npm --name backend -- start
   
