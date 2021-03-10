@@ -11,23 +11,15 @@
 - name: Copy node modules
   become: true
   shell: |
-    cd /home/ubuntu/backend
-    npm install
+    cd /home/ubuntu/
+    sudo npm install
+    sudo npm install -g webpack-dev-server
+    sudo npm run build
 
 - name: Start PM2
   become: true
   shell: |
-    cd /home/ubuntu/backend
+    cd /home/ubuntu/
+    tar xzvf backend.tar.gz
     sudo pm2 start npm --name backend -- start
-  environment:
-    echo ENVIRONMENT=production > "backend/.env"
-    echo TYPEORM_CONNECTION=postgres >> "backend/.env"
-    echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
-    echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
-    echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
-    echo NODE_ENV=production >> "backend/.env"
-    echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
-    echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
-    echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
-    echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
-    echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
+  
