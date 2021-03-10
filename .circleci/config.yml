@@ -158,10 +158,15 @@ jobs:
           name: Add back-end ip to ansible inventory
           working_directory: ./.circleci/ansible
           command: |            
-            BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" \
-            --request GET https://api.memstash.io/values/BACKEND_IP)
-            echo $BACKEND_IP >> inventory.txt
+            aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
+              --output text) >> inventory.txt
             cat inventory.txt
+#            BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" \
+#            --request GET https://api.memstash.io/values/BACKEND_IP)
+#            echo $BACKEND_IP >> inventory.txt
+#            cat inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
