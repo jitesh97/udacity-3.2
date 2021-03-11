@@ -8,11 +8,12 @@
     src: /root/project/backend.tar.gz
     dest: /home/ubuntu/backend
 
-- name: Copy node modules
-  become: yes
-  synchronize:
-    src: /root/project/node_modules
-    dest: /home/ubuntu/backend
+#- name: Copy node modules
+#  become: yes
+#  synchronize:
+#    src: /root/project/node_modules
+#    dest: /home/ubuntu/backend
+#    recursive: true
 
 - name: Start PM2
   become: true
