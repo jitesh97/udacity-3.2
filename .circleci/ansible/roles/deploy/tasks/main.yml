@@ -8,12 +8,15 @@
     src: /root/project/backend.tar.gz
     dest: /home/ubuntu/backend
 
+- name: Copy node modules
+  become: yes
+  synchronize:
+    src: /root/project/node_modules
+    dest: /home/ubuntu/backend
+
 - name: Start PM2
   become: true
   shell: |
     cd /home/ubuntu/backend
-    sudo npm install -g npm@latest
-    sudo npm install
-    sudo npm run build
     sudo pm2 start npm --name backend -- start
   
