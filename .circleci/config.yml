@@ -312,11 +312,13 @@ jobs:
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
 
+            cd /root/project/,circleci/ansible
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
-              --output text >> .circleci/ansible/inventory.txt
-            cat .circleci/ansible/inventory.txt
+              --output text >+
+            inventory.txt
+            awk 1 inventory.txt
 
             ansible-playbook deploy-backend.yml -i inventory.txt 
 
