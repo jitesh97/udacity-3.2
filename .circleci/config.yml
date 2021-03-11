@@ -318,7 +318,8 @@ jobs:
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
               --output text >> inventory.txt
             cat inventory.txt
-            ansible all --list-hosts
+            
+            cd .circleci/ansible
             ansible-playbook deploy-backend.yml -i inventory.txt -vv
       - destroy-environment
       - revert-migrations
