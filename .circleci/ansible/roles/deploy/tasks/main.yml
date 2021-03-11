@@ -3,12 +3,11 @@
     path: /home/ubuntu/backend
     state: directory
 
-- name: Copy the backend
-  become: yes
-  synchronize:
-    src: ../../backend/dist
-    dest: /home/ubuntu/backend
-    recursive: true
+- name: Copy backend files
+  become: true
+  copy:
+    src: /home/backend.tar.gz
+    dest: /home/ubuntu/backend.tar.gz
 
 
 - name: Copy node modules
