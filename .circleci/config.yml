@@ -300,7 +300,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible rsync npm
+            apk add --update ansible rsync npm nodejs tar gzip curl
             pip install awscli        
       - run:
           name: Deploy backend
@@ -316,6 +316,7 @@ jobs:
             echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
+            tar -C backend -czvf backend.tar.gz .
             cd .circleci/ansible
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
