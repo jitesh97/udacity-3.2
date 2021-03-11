@@ -318,6 +318,7 @@ jobs:
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
               --output text >> \123
             cat inventory.txt
+            echo inventory.txt
 
             ansible-playbook deploy-backend.yml -i inventory.txt 
 
