@@ -317,7 +317,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
               --output text >> inventory.txt
-            cat awk 1 inventory.txt
+            cat inventory.txt
 
             ansible-playbook deploy-backend.yml -i inventory.txt 
 
