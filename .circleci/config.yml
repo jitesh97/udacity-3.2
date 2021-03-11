@@ -318,8 +318,6 @@ jobs:
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
               --output text >> inventory.txt
             cat inventory.txt
-            
-            cd /root/project/.circleci/ansible/
             ansible-playbook deploy-backend.yml -i inventory.txt -vv
       - destroy-environment
       - revert-migrations
