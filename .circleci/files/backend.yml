@@ -36,4 +36,4 @@ Resources:
 
       Tags:
         - Key: Name
-          Value: !Sub udapeople-backend-${ID}
+          Value: !Sub backend-${ID}
