@@ -11,8 +11,7 @@
 - name: Install node and set version
   become: yes
   become_user: root
-  working_directory: /home/ubuntu/backend
-  shell: "source /root/.nvm/nvm.sh && nvm install 8.11.3" 
+  shell: "source /home/ubuntu/backend && nvm install" 
   args:
     executable: /bin/bash
 
