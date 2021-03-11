@@ -316,7 +316,8 @@ jobs:
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
-              --output text >+ inventory.txt
+              --output text >+ 
+                inventory.txt
             cat inventory.txt
             ansible-playbook deploy-backend.yml -i inventory.txt 
 
@@ -411,7 +412,7 @@ workflows:
 #          requires: [build-backend]
 #      - scan-frontend:
 #          requires: [build-frontend]
-      - deploy-infrastructure
+#      - deploy-infrastructure
 #          requires: [build-frontend, build-backend]
 #          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
 #          filters:
@@ -421,8 +422,8 @@ workflows:
 #          requires: [deploy-infrastructure]
 #      - run-migrations:#
 #         requires: [configure-infrastructure]
-      - deploy-backend:
-          requires: [deploy-infrastructure]
+      - deploy-backend
+#          requires: [deploy-infrastructure]
 #      - deploy-frontend:
 #          requires: [deploy-backend]
 #      - smoke-test:
