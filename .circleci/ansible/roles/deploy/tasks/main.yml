@@ -4,10 +4,12 @@
     state: directory
 
 - name: Copy the backend
-  become: true
-  copy:
-    src: /home/backend/dist
+  become: yes
+  synchronize:
+    src: ../../backend/dist
     dest: /home/ubuntu/backend
+    recursive: true
+
 
 - name: Copy node modules
   shell: |
