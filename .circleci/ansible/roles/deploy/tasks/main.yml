@@ -12,8 +12,7 @@
 - name: Copy node modules
   shell: |
     cd /home/ubuntu/backend
-    sudo npm install
-    sudo npm install -g webpack-dev-server
+    npm instal
 
 
 - name: Start PM2
