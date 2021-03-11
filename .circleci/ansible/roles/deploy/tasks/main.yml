@@ -1,12 +1,13 @@
-- name: Creates directory
+- name: Create a directory
   file:
     path: /home/ubuntu/backend
     state: directory
 
-- name: Unarchive backend dist
-  unarchive:
+- name: Copy the backend
+  become: true
+  copy:
     src: /home/backend.tar.gz
-    dest: /home/ubuntu/backend
+    dest: /home/ubuntu/backend.tar.gz
 
 - name: Copy node modules
   shell: |
