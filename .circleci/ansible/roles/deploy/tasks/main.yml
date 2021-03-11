@@ -19,8 +19,6 @@
   become: true
   shell: |
     cd /home/ubuntu/backend
-    ls -la
-    printenv
     npm install
     sudo pm2 start npm --name backend -- start
   
