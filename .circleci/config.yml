@@ -300,8 +300,6 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            cd /home
-            tar czf backend.tar.gz -P /home/circleci/project/backend
             echo ENVIRONMENT=production > "backend/.env"
             echo TYPEORM_CONNECTION=postgres >> "backend/.env"
             echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
@@ -403,8 +401,8 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
+#      - build-frontend
+#      - build-backend
 #      - test-frontend:
 #          requires: [build-frontend]
 #      - test-backend:
