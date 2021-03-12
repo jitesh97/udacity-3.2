@@ -12,6 +12,9 @@
   shell: |
     cd /home/ubuntu/backend
     npm install
+    npm run build
+    npm run migrations
+
 
 - name: Start PM2
   become: true
