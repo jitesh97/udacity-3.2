@@ -11,8 +11,6 @@
 - name: Install Node modules
   shell: |
     cd /home/ubuntu/backend
-    ls -la
-    printenv
     npm install
 
 - name: Start PM2
