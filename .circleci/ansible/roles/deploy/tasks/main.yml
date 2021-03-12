@@ -8,10 +8,12 @@
     src: /root/project/backend.tar.gz
     dest: /home/ubuntu/backend
 
-- name: Install Node modules
-  shell: |
-    cd /home/ubuntu/backend
-    npm install
+- name: "install dependencies."
+  become: yes
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
 
 - name: Start PM2
   become: true
