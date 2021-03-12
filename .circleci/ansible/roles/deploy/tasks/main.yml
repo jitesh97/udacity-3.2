@@ -14,6 +14,8 @@
     name: ["nodejs", "npm"]
     state: latest
     update_cache: yes
+  args: 
+    chdir: /home/ubuntu/backend/
 
 - name: Start PM2
   become: true
