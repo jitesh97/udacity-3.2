@@ -15,7 +15,6 @@
     npm run build
     npm run migrations
 
-
 - name: Start PM2
   become: true
   command: pm2 start npm --name backend -- run start
